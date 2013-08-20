@@ -23,5 +23,32 @@ namespace UserLogGenerator
         {
             InitializeComponent();
         }
+
+        private void buttonGenerateKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (textUsername.Text.ToString().Equals(""))
+            {
+                MessageBox.Show("Username not defined");
+                return;
+            }
+            if (textPassword.Text.ToString().Equals(""))
+            {
+                MessageBox.Show("Password not defined");
+                return;
+            }
+            if (textKey.Text.ToString().Equals(""))
+            {
+                MessageBox.Show("Key not defined");
+                return;
+            }
+            string stringToCrypted = textUsername.Text.ToString() + ":" + textPassword.Text.ToString();
+            string text = textKey.Text.ToString();
+            var RSA = new System.Security.Cryptography.RSACryptoServiceProvider();
+            RSA.FromXmlString(text);
+
+            byte[] machainechiffre = RSA.Encrypt(Encoding.Unicode.GetBytes(stringToCrypted), false);
+            System.IO.File.WriteAllBytes(@"logNewUser.info", machainechiffre);
+            MessageBox.Show("logNewUser.info généré");
+        }
     }
 }
